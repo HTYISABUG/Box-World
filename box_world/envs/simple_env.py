@@ -197,6 +197,20 @@ class BoxWorld(gym.Env):
     def __isLooseKey(self, r, c):
         return self.__isLockOrKey(r, c) and not self.__isLockOrKey(r, c - 1) and not self.__isLockOrKey(r, c + 1)
 
+    def toImage(self):
+        scale = 16
+        output_size = 14 * scale
+        output_shape = (output_size, output_size)
+        image = np.zeros((*output_shape, 3))
+
+        for y, row in enumerate(self.__room):
+            for x, col in enumerate(row):
+                for dy in range(scale):
+                    for dx in range(scale):
+                        image[y*scale+dy, x*scale+dx] = self.__room[y, x]
+
+        return image
+
 class Action(enum.IntEnum):
     U = 0
     L = 1
